@@ -6,18 +6,21 @@ VAR
   p3: model(s2);
   p4: model({s0,s1,s2});
 
-ASSIGN
-  LTLSPEC ((p1.p) & (p1.q))                         -------1.    TRUE
-  LTLSPEC !(p1.r)                                   -------2.    TRUE
-  LTLSPEC (p1.tr)                                   -------3.    TRUE
-  LTLSPEC X (p1.r)                                  -------4.    TRUE
-  LTLSPEC X ((p1.q) & (p1.r))                       -------5.    FALSE
-  LTLSPEC G (!((p1.p) & (p1.r)))                    -------6.    TRUE
-  LTLSPEC G (p3.r)                                  -------7.    TRUE
-  LTLSPEC ((F (!(p4.q) & (p4.r))) -> (F (G (p4.r))))-------8.    TRUE
-  LTLSPEC G (F (p4.p))                              -------9.    FALSE  
-  LTLSPEC ( (G  (F(p1.p))) -> (G (F (p1.r))) )      -------10.   TRUE
-  LTLSPEC ( (G  (F(p1.r))) -> (G (F (p1.p))) )      -------10.2. FALSE
+ASSIGN   
+
+----------------- ALL CTL formulae considered, evaluate to TRUE
+  CTLSPEC ((p1.p) & (p1.q))             -----1.
+  CTLSPEC !(p1.r)                       -----2.
+  CTLSPEC (p1.tr)                       -----3.
+  CTLSPEC (EX(p1.q & p1.r))             -----4.
+  CTLSPEC !(AX ((p1.q) & (p1.r)))       -----5.
+  CTLSPEC !( EF(((p1.p) & (p1.r))))     -----6.
+  CTLSPEC EG (p3.r)                     -----7.
+  CTLSPEC AG(p3.r)                      -----7.2.
+  CTLSPEC AF (p1.r)                     -----8.
+  CTLSPEC E[(p1.p & p1.q) U p1.r]       -----9.
+  CTLSPEC A[p1.p U p1.r]                -----10.
+  CTLSPEC AG ((p1.p|p1.q|p1.r)->EF EG p1.r)--11.
 
 
 
