@@ -1,0 +1,53 @@
+MODULE main()
+VAR
+
+	st : {s0,s1,s2};
+    
+    p: boolean;
+    q: boolean;
+    r: boolean;
+    tr: boolean;
+
+ASSIGN
+
+  init(tr):=TRUE;
+    init(p):= case
+                st=s0 : TRUE;
+                st=s1 : FALSE;
+                st=s2 : FALSE;
+              esac;
+    init(q):= case
+                st=s0 : TRUE;
+                st=s1 : TRUE;
+                st=s2 : FALSE;
+              esac;
+    init(r):= case
+                st=s0 : FALSE;
+                st=s1 : TRUE;
+                st=s2 : TRUE;
+              esac;
+
+
+    next(tr):=TRUE;
+	next(st):= case
+                (st=s0) : {s1,s2};
+                (st=s1) : {s2,s0};
+                (st=s2) : s2;
+
+				 esac;
+    
+    next(p):= case
+                next(st)=s0 : TRUE;
+                next(st)=s1 : FALSE;
+                next(st)=s2 : FALSE;
+              esac;
+    next(q):= case
+                next(st)=s0 : TRUE;
+                next(st)=s1 : TRUE;
+                next(st)=s2 : FALSE;
+              esac;
+    next(r):= case
+                next(st)=s0 : FALSE;
+                next(st)=s1 : TRUE;
+                next(st)=s2 : TRUE;
+              esac;

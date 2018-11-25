@@ -1,0 +1,76 @@
+MODULE main() 
+VAR
+  st : {s0,s1,s2};
+  p1: model(s0);
+  p2: model(s1);
+  p3: model(s2);
+  p4: model({s0,s1,s2});
+
+ASSIGN
+  LTLSPEC ((p1.p) & (p1.q))
+  LTLSPEC !(p1.r)
+  LTLSPEC (p1.tr)
+  LTLSPEC X (p1.r)
+  LTLSPEC X ((p1.q) & (p1.r))
+  LTLSPEC G (!((p1.p) & (p1.r)))
+  LTLSPEC G (p3.r)
+  LTLSPEC ((F (!(p4.q) & (p4.r))) -> (F (G (p4.r))))
+  LTLSPEC G (F (p4.p))  
+  LTLSPEC ( (G  (F(p1.p))) -> (G (F (p1.r))) )
+  LTLSPEC ( (G  (F(p1.r))) -> (G (F (p1.p))) )
+
+
+
+
+MODULE model(s)
+VAR
+
+	st : {s0,s1,s2};
+    
+    p: boolean;
+    q: boolean;
+    r: boolean;
+    tr: boolean;
+
+ASSIGN
+
+	init(st):= s;
+  init(tr):=TRUE;
+    init(p):= case
+                st=s0 : TRUE;
+                st=s1 : FALSE;
+                st=s2 : FALSE;
+              esac;
+    init(q):= case
+                st=s0 : TRUE;
+                st=s1 : TRUE;
+                st=s2 : FALSE;
+              esac;
+    init(r):= case
+                st=s0 : FALSE;
+                st=s1 : TRUE;
+                st=s2 : TRUE;
+              esac;
+  next(tr):=TRUE;
+	next(st):= case
+                (st=s0) : {s1,s2};
+                (st=s1) : {s2,s0};
+                (st=s2) : s2;
+
+				 esac;
+    
+    next(p):= case
+                next(st)=s0 : TRUE;
+                next(st)=s1 : FALSE;
+                next(st)=s2 : FALSE;
+              esac;
+    next(q):= case
+                next(st)=s0 : TRUE;
+                next(st)=s1 : TRUE;
+                next(st)=s2 : FALSE;
+              esac;
+    next(r):= case
+                next(st)=s0 : FALSE;
+                next(st)=s1 : TRUE;
+                next(st)=s2 : TRUE;
+              esac;
